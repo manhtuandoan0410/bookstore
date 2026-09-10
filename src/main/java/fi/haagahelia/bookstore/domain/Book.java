@@ -1,10 +1,7 @@
 package fi.haagahelia.bookstore.domain;
 
-import org.springframework.stereotype.Indexed;
-
-import jakarta.persistence.Entity; //dependency
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.GenerationType; //dependency
 import jakarta.persistence.Id;
 
 public class Book {
@@ -76,6 +73,14 @@ public class Book {
     }
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    // Tostring in this case written here to understand
+    // can we get informationfrom the database to hte controller
+
+    @Override
+    public String toString() {
+        return "Book [id=" + id + ", title=" + title + ", author="  + author + ", publicationYear=" + publicationYear + ", isbn=" + isbn + ", price=" + price + "]";
     }
 
 }

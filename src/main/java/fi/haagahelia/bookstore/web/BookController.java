@@ -8,7 +8,8 @@ import fi.haagahelia.bookstore.domain.BookRepository;
 
 @Controller
 public class BookController {
-    //private final List<Book> books = new ArrayList<>();
+    
+
 	private final BookRepository bookRepository;
 
 	public BookController(BookRepository bookRepository) {

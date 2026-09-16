@@ -1,9 +1,11 @@
 package fi.haagahelia.bookstore.domain;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType; //dependency
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue; //dependency
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+@Entity 
 public class Book {
     
     @Id

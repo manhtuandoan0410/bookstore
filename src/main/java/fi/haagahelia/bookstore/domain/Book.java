@@ -1,36 +1,34 @@
 package fi.haagahelia.bookstore.domain;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue; //dependency
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity 
+@Entity
 public class Book {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String title, author;
-    private Integer publicationYear, isbn;
+    private String title;
+    private String author;
+    private String isbn;
+    private Integer year;
     private Double price;
 
     public Book() {
-        super();
     }
 
     public Book(Long id, String title, String author) {
-        super();
         this.id = id;
         this.title = title;
         this.author = author;
-    
     }
 
-    public Book(Integer publicationYear, Integer isbn, Double price) {
-        super();
-        this.publicationYear = publicationYear;
+    public Book(Integer year, String isbn, Double price) {
+        this.year = year;
         this.isbn = isbn;
         this.price = price;
     }
@@ -38,6 +36,7 @@ public class Book {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -45,44 +44,50 @@ public class Book {
     public String getTitle() {
         return title;
     }
-    public void setTitle(String title){
+
+    public void setTitle(String title) {
         this.title = title;
     }
 
     public String getAuthor() {
         return author;
     }
+
     public void setAuthor(String author) {
         this.author = author;
     }
 
-    public Integer getPublicationYear() {
-        return publicationYear;
-    }
-    public void setPublicationYear(Integer publicationYear) {
-        this.publicationYear = publicationYear;
+    public Integer getYear() {
+        return year;
     }
 
-    public Integer getIsbn() {
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public String getIsbn() {
         return isbn;
     }
-    public void setIsbn(Integer isbn) {
+
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
     public Double getPrice() {
         return price;
     }
+
     public void setPrice(Double price) {
         this.price = price;
     }
 
-    // Tostring in this case written here to understand
-    // can we get informationfrom the database to hte controller
-
     @Override
     public String toString() {
-        return "Book [id=" + id + ", title=" + title + ", author="  + author + ", publicationYear=" + publicationYear + ", isbn=" + isbn + ", price=" + price + "]";
+        return "Book [id=" + id
+                + ", title=" + title
+                + ", author=" + author
+                + ", year=" + year
+                + ", isbn=" + isbn
+                + ", price=" + price + "]";
     }
-
 }

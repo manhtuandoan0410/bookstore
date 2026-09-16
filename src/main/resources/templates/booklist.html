@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book List</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
 </head>
 
 <body>
@@ -25,16 +26,19 @@
             <td th:text="${book.isbn}"></td>
             <td th:text="${book.year}"></td>
             <td>
-                <a th:href="@{/book/delete/{id}(id=${book.id})}">
-                    <button type="button">Delete</button>
+                <a class="btn btn-danger" th:href="@{/book/delete/{id}(id=${book.id})}">
+                    Delete
+                </a>
+                <a class="btn btn-primary" th:href="@{/book/edit/{id}(id=${book.id})}">
+                    Edit
                 </a>
             </td>
         </tr>
 
         <tr>
             <td colspan="5">
-                <a th:href="@{/book/add}">
-                    <button type="button">Add Book</button>
+                <a class="btn btn-success" th:href="@{/book/add}">
+                    Add Book
                 </a>
             </td>
         </tr>

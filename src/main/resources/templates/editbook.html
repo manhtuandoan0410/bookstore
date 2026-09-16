@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Book</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+
+<body class="container">
+    <h2>Edit Book</h2>
+
+    <form th:object="${book}" th:action="@{/book/edit/{id}(id=${book.id})}" method="post">
+
+        <input type="hidden" id="id" th:field="*{id}">
+
+        <div class="mb-3">
+            <label class="form-label" for="author">Author:</label>
+            <input id="author" class="form-control" type="text" th:field="*{author}" placeholder="Enter author"
+                title="Book author" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="title">Title:</label>
+            <input id="title" class="form-control" type="text" th:field="*{title}" placeholder="Enter title"
+                title="Book title" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="isbn">ISBN:</label>
+            <input id="isbn" class="form-control" type="text" th:field="*{isbn}" placeholder="Enter ISBN"
+                title="Book ISBN" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="year">Year:</label>
+            <input id="year" class="form-control" type="number" th:field="*{year}" placeholder="Enter publication year"
+                title="Publication year" required>
+        </div>
+
+        <button class="btn btn-success" type="submit">Save</button>
+        <a class="btn btn-secondary" th:href="@{/booklist}">Cancel</a>
+    </form>
+</body>
+
+</html>

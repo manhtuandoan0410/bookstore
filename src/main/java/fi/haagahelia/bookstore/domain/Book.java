@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 
 @Entity
 public class Book {
@@ -15,6 +16,8 @@ public class Book {
     private String title;
     private String author;
     private String isbn;
+
+    @Column(name = "publication_year")
     private Integer year;
     private Double price;
 

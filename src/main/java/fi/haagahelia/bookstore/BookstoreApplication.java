@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Bean;
 import fi.haagahelia.bookstore.domain.Book;
 import fi.haagahelia.bookstore.domain.BookRepository;
 
+import fi.haagahelia.bookstore.domain.Category;
+import fi.haagahelia.bookstore.domain.CategoryRepository;
+
 @SpringBootApplication
 public class BookstoreApplication {
 
@@ -16,16 +19,29 @@ public class BookstoreApplication {
     }
 
     @Bean
-    public CommandLineRunner initializeDatabase(BookRepository bookRepository) {
+    public CommandLineRunner initializeDatabase(
+                    BookRepository bookRepository,
+                    CategoryRepository categoryRepository) {
         return args -> {
+
+            Category politics = new Category("Politics");
+            Category fiction = new Category("Fiction");
+            Category horror = new Category("Horror");
+
+            categoryRepository.save(politics);
+            categoryRepository.save(fiction);
+            categoryRepository.save(horror);
+
             Book book1 = new Book();
             book1.setTitle("The Great Gatsby");
             book1.setAuthor("Tuan Doan");
             book1.setIsbn("9780743273565");
             book1.setYear(1925);
+            book1.setCategory(fiction);
             book1.setPrice(15.99);
 
-            bookRepository.save(book1);
+            fiction.addBook(book1);
+            categoryRepository.save(fiction);
         };
     }
 }

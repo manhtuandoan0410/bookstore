@@ -20,7 +20,7 @@ public class Category {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy ="category")
-    private List<Book> books = new ArrayList<>();
+    private final List<Book> books = new ArrayList<>();
 
     protected Category() {
     // Required by JPA

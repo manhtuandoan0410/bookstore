@@ -3,6 +3,7 @@ package fi.haagahelia.bookstore.domain;
 //import fi.haagahelia.bookstore.domain.Category;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,8 +26,8 @@ public class Book {
     private Integer year;
     private Double price;
 
-    @ManyToOne 
-    @JoinColumn(name = "categoryId")
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_Id")
     private Category category;
 
     public Book() {

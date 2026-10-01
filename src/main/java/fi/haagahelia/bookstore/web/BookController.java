@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import fi.haagahelia.bookstore.domain.Book;
 import fi.haagahelia.bookstore.domain.BookRepository;
+import fi.haagahelia.bookstore.domain.Category;
 //import fi.haagahelia.bookstore.domain.Category;
 import fi.haagahelia.bookstore.domain.CategoryRepository;
 
@@ -36,7 +38,15 @@ public class BookController {
     }
 
     @PostMapping("/book/add")
-    public String saveBook(@ModelAttribute("book") Book book) {
+    public String saveBook(@ModelAttribute("book") Book book,
+                        @RequestParam Long categoryId) {
+        // Set the category for the book
+        Category category = crepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid category id: " + categoryId));
+        book.setCategory(category);
+
+        category.getBooks().add(book); // Add the book to the category's book list
+
         bookRepository.save(book);
         return "redirect:/booklist";
     }

@@ -30,14 +30,19 @@ public class BookController {
     //     return "addbook";
     // }
 
-    @GetMapping("/book/add")
+    @GetMapping("/book/addbook")
     public String addBook(Model model) {
         model.addAttribute("book", new Book());
         model.addAttribute("category", crepository.findAll());
         return "addbook";
     }
 
-    @PostMapping("/book/add")
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @PostMapping("/book/addbook")
     public String saveBook(@ModelAttribute("book") Book book,
                         @RequestParam Long categoryId) {
         // Set the category for the book

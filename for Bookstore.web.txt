@@ -1,0 +1,139 @@
+for Bookstore.web
+
+bookstoreName: bookstoreNameApplication
+domain: book, book repository
+web: bookController
+
+
+1. POM.xml ==> check dependencies: com.h2database, JPA, indexes, etc.  (check the material week 3)
+
+2. application.properties
+
+3. entity @Entity class
+
+4. Crud Repository
+
+ORM Object Relational Mapping
+- SQL generator
+JPA Java Persistence API
+
+DB
+H2: 
+- Data in RAM
+- Testing purposes only, no production
+
+next week (17.09) MySQL
+
+browser -> controller -> model -> crud Repository -> db (or the other way around)
+- crub repo is an interface which extends class that has save, delete, update
+
+- REST Services
+
+For a bookstore web application, a REST service is the backend part that lets the frontend (React, mobile app, website, etc.) communicate with the bookstore data using HTTP requests.
+
+Think of it like this:
+
+Frontend = bookstore cashier/customer interface
+REST API = employee who receives requests
+Database = warehouse storing books
+
+Example: Bookstore
+Suppose your database contains:
+{
+"id": 1,
+"title": "Spring Boot in Action",
+"author": "Craig Walls",
+"price": 39.90
+}
+
+1. Get all books
+Frontend sends: GET /api/books
+REST service returns:
+[
+{
+"id": 1,
+"title": "Spring Boot in Action",
+"author": "Craig Walls",
+"price": 39.90
+},
+{
+"id": 2,
+"title": "Clean Code",
+"author": "Robert Martin",
+"price": 42.50
+}
+]
+
+2. Get one book
+Request: GET /api/books/1
+Response:
+{
+"id": 1,
+"title": "Spring Boot in Action",
+"author": "Craig Walls",
+"price": 39.90
+}
+
+3.Add a new book
+Request: POST /api/books
+Body:
+{
+"title": "Java Basics",
+"author": "John Smith",
+"price": 29.90
+}
+Response:
+{
+"id": 3,
+"title": "Java Basics",
+"author": "John Smith",
+"price": 29.90
+}
+
+4. Update a book
+Request: PUT /api/books/3
+Body: 
+{
+"title": "Java Basics 2nd Edition",
+"author": "
+}
+
+5. Deleta a book
+Request: DELETE /api/books/3
+Response: 204 No Content
+
+In Spring Boot, you would typically create a REST controller:
+@RestController
+@RequestMapping("/api/books")
+public class BookRestController {
+ 
+@Autowired
+private BookRepository repository;
+ 
+@GetMapping
+public Iterable<Book> getBooks() {
+return repository.findAll();
+}
+ 
+@GetMapping("/{id}")
+public Book getBook(@PathVariable Long id) {
+return repository.findById(id).orElse(null);
+}
+ 
+@PostMapping
+public Book addBook(@RequestBody Book book) {
+return repository.save(book);
+}
+ 
+@PutMapping("/{id}")
+public Book updateBook(@RequestBody Book book) {
+return repository.save(book);
+}
+ 
+@DeleteMapping("/{id}")
+public void deleteBook(@PathVariable Long id) {
+repository.deleteById(id);
+}
+}
+
+- Spring security provides ready made login, registration and sign up function

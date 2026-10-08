@@ -42,6 +42,17 @@ public class BookstoreApplication {
 
             fiction.addBook(book1);
             categoryRepository.save(fiction);
+
+            Book book2 = new Book();
+            book1.setTitle("The Worst Gatsby");
+            book1.setAuthor("Tuan Doan");
+            book1.setIsbn("9780743273562");
+            book1.setYear(1926);
+            book1.setCategory(fiction);
+            book1.setPrice(15.99); 
+
+            fiction.addBook(book2);
+            categoryRepository.save(fiction);
         };
     }
 }

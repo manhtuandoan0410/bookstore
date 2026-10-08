@@ -42,7 +42,7 @@ public class WebSecurityConfig {
             .roles("USER")
             .build();
 
-            List<UserDetails> users = new ArrayList();
+            List<UserDetails> users = new ArrayList<>();
             users.add(user);
         return new InMemoryUserDetailsManager(users);
     }

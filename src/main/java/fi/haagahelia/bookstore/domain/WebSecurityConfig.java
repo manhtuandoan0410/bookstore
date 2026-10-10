@@ -36,14 +36,22 @@ public class WebSecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-            .username("user")
+        UserDetails admin = User.withDefaultPasswordEncoder()
+            .username("admin")
             .password("password")
             .roles("ADMIN")
             .build();
 
-            List<UserDetails> users = new ArrayList<>();
-            users.add(user);
+        UserDetails user1 = User.withDefaultPasswordEncoder()
+            .username("user_1")
+            .password("user_1")
+            .roles("USER")
+            .build();
+
+        List<UserDetails> users = new ArrayList<>();
+        users.add(admin);
+        users.add(user1);
         return new InMemoryUserDetailsManager(users);
+
     }
 }

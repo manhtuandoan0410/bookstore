@@ -23,36 +23,58 @@ public class BookstoreApplication {
                     BookRepository bookRepository,
                     CategoryRepository categoryRepository) {
         return args -> {
+            Category politics = getOrCreateCategory("Politics", categoryRepository);
+            Category fiction = getOrCreateCategory("Fiction", categoryRepository);
+            Category horror = getOrCreateCategory("Horror", categoryRepository);
 
-            Category politics = new Category("Politics");
-            Category fiction = new Category("Fiction");
-            Category horror = new Category("Horror");
-
-            categoryRepository.save(politics);
-            categoryRepository.save(fiction);
-            categoryRepository.save(horror);
-
-            Book book1 = new Book();
-            book1.setTitle("The Great Gatsby");
-            book1.setAuthor("Tuan Doan");
-            book1.setIsbn("9780743273565");
-            book1.setYear(1925);
-            book1.setCategory(fiction);
-            book1.setPrice(15.99);
-
-            fiction.addBook(book1);
-            categoryRepository.save(fiction);
-
-            Book book2 = new Book();
-            book1.setTitle("The Worst Gatsby");
-            book1.setAuthor("Tuan Doan");
-            book1.setIsbn("9780743273562");
-            book1.setYear(1926);
-            book1.setCategory(fiction);
-            book1.setPrice(15.99); 
-
-            fiction.addBook(book2);
-            categoryRepository.save(fiction);
+            addBookIfMissing(bookRepository, "The Great Gatsby", "Tuan Doan",
+                    "9780743273565", 1925, 15.99, fiction);
+            addBookIfMissing(bookRepository, "The Worst Gatsby", "Tuan Doan",
+                    "9780743273562", 1926, 15.99, fiction);
+            addBookIfMissing(bookRepository, "To Kill a Mockingbird", "Harper Lee",
+                    "9780061120084", 1960, 12.99, fiction);
+            addBookIfMissing(bookRepository, "1984", "George Orwell",
+                    "9780451524935", 1949, 11.99, politics);
+            addBookIfMissing(bookRepository, "Pride and Prejudice", "Jane Austen",
+                    "9780141439518", 1813, 9.99, fiction);
+            addBookIfMissing(bookRepository, "The Hobbit", "J.R.R. Tolkien",
+                    "9780547928227", 1937, 14.99, fiction);
+            addBookIfMissing(bookRepository, "Dune", "Frank Herbert",
+                    "9780441172719", 1965, 16.99, fiction);
+            addBookIfMissing(bookRepository, "The Shining", "Stephen King",
+                    "9780307743657", 1977, 13.99, horror);
+            addBookIfMissing(bookRepository, "The Handmaid's Tale", "Margaret Atwood",
+                    "9780385490818", 1985, 14.99, politics);
+            addBookIfMissing(bookRepository, "The Road", "Cormac McCarthy",
+                    "9780307387899", 2006, 12.99, fiction);
         };
+    }
+
+    private Category getOrCreateCategory(String name, CategoryRepository categoryRepository) {
+        return categoryRepository.findByName(name).stream()
+                .findFirst()
+                .orElseGet(() -> categoryRepository.save(new Category(name)));
+    }
+
+    private void addBookIfMissing(
+            BookRepository bookRepository,
+            String title,
+            String author,
+            String isbn,
+            int year,
+            double price,
+            Category category) {
+        if (!bookRepository.findByIsbn(isbn).isEmpty()) {
+            return;
+        }
+
+        Book book = new Book();
+        book.setTitle(title);
+        book.setAuthor(author);
+        book.setIsbn(isbn);
+        book.setYear(year);
+        book.setPrice(price);
+        book.setCategory(category);
+        bookRepository.save(book);
     }
 }

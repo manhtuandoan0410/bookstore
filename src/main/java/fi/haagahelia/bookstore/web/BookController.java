@@ -2,6 +2,9 @@ package fi.haagahelia.bookstore.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,12 +66,23 @@ public class BookController {
   
 
     @RequestMapping(value = {"/", "/booklist"})
-    public String listBooks(Model model) {
+    public String listBooks(Model model, @AuthenticationPrincipal UserDetails user) {
         model.addAttribute("books", bookRepository.findAll());
+        model.addAttribute("isAdmin", user != null && user.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN")));
+
+        if (user != null) {
+            model.addAttribute("username", user.getUsername());
+            String role = user.getAuthorities().stream()
+                        .map(authority -> authority.getAuthority().replaceFirst("^ROLE_", ""))
+                        .findFirst()
+                        .orElse("USER");
+            model.addAttribute("role", role);
+        }
         return "booklist";
     }
 
-    @GetMapping("/book/delete/{id}")
+    @PostMapping("/book/delete/{id}")
     public String deleteBook(@PathVariable("id") Long id) {
         bookRepository.deleteById(id);
         return "redirect:/booklist";

@@ -1,18 +1,27 @@
 package fi.haagahelia.bookstore;
 
+// import org.jspecify.annotations.Nullable;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import fi.haagahelia.bookstore.domain.AppUserRepository;
 import fi.haagahelia.bookstore.domain.Book;
 import fi.haagahelia.bookstore.domain.BookRepository;
-
 import fi.haagahelia.bookstore.domain.Category;
 import fi.haagahelia.bookstore.domain.CategoryRepository;
+import fi.haagahelia.bookstore.domain.AppUser;
 
 @SpringBootApplication
 public class BookstoreApplication {
+
+//     private final AppUserRepository appUserRepository;
+
+//     BookstoreApplication(AppUserRepository appUserRepository) {
+//         this.appUserRepository = appUserRepository;
+//     }
 
     public static void main(String[] args) {
         SpringApplication.run(BookstoreApplication.class, args);
@@ -20,8 +29,10 @@ public class BookstoreApplication {
 
     @Bean
     public CommandLineRunner initializeDatabase(
-                    BookRepository bookRepository,
-                    CategoryRepository categoryRepository) {
+                        BookRepository bookRepository,
+                        CategoryRepository categoryRepository,
+                        AppUserRepository appUserRepository,
+                        PasswordEncoder passwordEncoder) {
         return args -> {
             Category politics = getOrCreateCategory("Politics", categoryRepository);
             Category fiction = getOrCreateCategory("Fiction", categoryRepository);
@@ -47,6 +58,23 @@ public class BookstoreApplication {
                     "9780385490818", 1985, 14.99, politics);
             addBookIfMissing(bookRepository, "The Road", "Cormac McCarthy",
                     "9780307387899", 2006, 12.99, fiction);
+
+            if (appUserRepository.findByUsername("admin").isEmpty()) {
+                appUserRepository.save(new AppUser(
+                        "admin",
+                        passwordEncoder.encode("sample-admin-password"),
+                        "ADMIN", 
+                        "admin@example.com"));
+            }
+            if (appUserRepository.findByUsername("user_1").isEmpty()) {
+                appUserRepository.save(new AppUser(
+                        "user_1",
+                        passwordEncoder.encode("sample-user-password"),
+                        "USER", 
+                        "user_1@example.com"));
+            }
+            addUserIfMissing(appUserRepository, "user_2", passwordEncoder.encode("sample-user-password"), "USER", "user_2@example.com");
+
         };
     }
 
@@ -76,5 +104,24 @@ public class BookstoreApplication {
         book.setPrice(price);
         book.setCategory(category);
         bookRepository.save(book);
+    }
+
+    private void addUserIfMissing(
+            AppUserRepository appUserRepository,
+            String username,
+            String password,
+            String role,
+            String email) {
+        if (!appUserRepository.findByUsername(username).isEmpty()) {
+            return;
+        }
+
+        AppUser user = new AppUser();
+        user.setUsername(username);
+        user.setPasswordHash(password);
+        user.setRole(role);
+        user.setEmail(email);
+    
+        appUserRepository.save(user);
     }
 }

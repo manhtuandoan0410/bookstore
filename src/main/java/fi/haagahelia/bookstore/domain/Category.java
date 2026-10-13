@@ -10,6 +10,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Entity;
 import jakarta.persistence.CascadeType;
 
+//avoid serialization error 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Category {
     
@@ -44,6 +47,7 @@ public class Category {
         this.name = name;
     }
 
+    @JsonIgnore
     public List<Book> getBooks() {
         return books;
     }

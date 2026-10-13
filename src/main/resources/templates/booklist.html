@@ -9,16 +9,25 @@
 </head>
 
 <body>
-    <h2>Books</h2>
+    <div class="d-flex align-items-center justify-content-between">
+        <h2>Books</h2>
+        <a th:if="${username == null}" th:href="@{/login}">Log In</a>
 
-    <table class="table table-striped">
+        <div th:if="${username != null}">
+            <span th:text="|${username} (${role})|"></span>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Log Out</button>
+            </form>
+        </div>
+    </div>
+    <table class="table table-striped mt-5">
         <tr>
             <th>Author</th>
             <th>Title</th>
             <th>ISBN</th>
             <th>Year</th>
             <th>Category</th>
-            <th>Action</th>
+            <th th:if="${isAdmin}">Action</th>
         </tr>
 
         <tr th:each="book : ${books}">
@@ -27,15 +36,15 @@
             <td th:text="${book.isbn}"></td>
             <td th:text="${book.year}"></td>
             <td th:text="${book.category.name}"></td>
-            <td>
-                <a class="btn btn-danger" th:href="@{/book/delete/{id}(id=${book.id})}">
-                    Delete
-                </a>
+            <td th:if="${isAdmin}">
+                <form th:action="@{/book/delete/{id}(id=${book.id})}" method="post">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
             </td>
         </tr>
 
-        <tr>
-            <td colspan="5">
+        <tr th:if="${isAdmin}">
+            <td colspan="6">
                 <a class="btn btn-success" th:href="@{/book/addbook}">
                     Add Book
                 </a>

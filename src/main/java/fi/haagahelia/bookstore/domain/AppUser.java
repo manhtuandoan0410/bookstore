@@ -25,14 +25,18 @@ public class AppUser {
 
     @Column(name="role", nullable = false)
     private String role;
+
+    @Column(name="email", nullable = false)
+    private String email;
     
     public AppUser() {}
     
-    public AppUser(String username, String passwordHash, String role) {
+    public AppUser(String username, String passwordHash, String role, String email) {
         super();
         this.username = username;
         this.passwordHash = passwordHash;
         this.role = role;
+        this.email = email;
     }
 
     public Long getId() {
@@ -61,6 +65,13 @@ public class AppUser {
     }
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
     
 }

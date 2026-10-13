@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+
+import java.util.Optional;
 
 import fi.haagahelia.bookstore.domain.Book;
 import fi.haagahelia.bookstore.domain.BookRepository;
@@ -27,9 +30,16 @@ public class BookRestController {
         return bookRepository.findAll();
     }
 
+    //change the get to avoid null, getting code 404 not found instead
     @GetMapping("/{id}")
-    public Book getBook(@PathVariable Long id) {
-        return bookRepository.findById(id).orElse(null);
+    public ResponseEntity<Book> getBook(@PathVariable Long id) {
+        Optional<Book>  book = bookRepository.findById(id);
+
+        if (book.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(book.get());
     }
 
     @PostMapping
@@ -38,8 +48,24 @@ public class BookRestController {
     }
 
     @PutMapping("/{id}")
-    public Book updateBook(@RequestBody Book book) {
-        return bookRepository.save(book);
+    public ResponseEntity<Book> updateBook(
+        @PathVariable Long id,
+        @RequestBody Book updatedBook) {
+
+            Optional<Book> existingBook = bookRepository.findById(id);
+
+            if (existingBook.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Book book = existingBook.get();
+            book.setTitle(updatedBook.getTitle());
+            book.setAuthor(updatedBook.getAuthor());
+            book.setIsbn(updatedBook.getIsbn());
+            book.setYear(updatedBook.getYear());
+            book.setPrice(updatedBook.getPrice());
+
+            return ResponseEntity.ok(bookRepository.save(book));
     }
 
     @DeleteMapping("/{id}")

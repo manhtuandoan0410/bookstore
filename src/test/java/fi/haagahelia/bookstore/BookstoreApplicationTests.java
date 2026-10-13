@@ -14,7 +14,7 @@ class BookstoreApplicationTests {
 	private final BookController controller;
 	private final BookRepository bookRepository;
 
-	 @Autowired
+	@Autowired
     public BookstoreApplicationTests(BookController controller, BookRepository bookRepository) {
         this.controller = controller;
 		this.bookRepository = bookRepository;

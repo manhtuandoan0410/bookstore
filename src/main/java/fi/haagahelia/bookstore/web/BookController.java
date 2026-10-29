@@ -1,29 +1,33 @@
 package fi.haagahelia.bookstore.web;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+//import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import fi.haagahelia.bookstore.domain.AppUserRepository;
 import fi.haagahelia.bookstore.domain.Book;
 import fi.haagahelia.bookstore.domain.BookRepository;
 import fi.haagahelia.bookstore.domain.Category;
-//import fi.haagahelia.bookstore.domain.Category;
 import fi.haagahelia.bookstore.domain.CategoryRepository;
+import fi.haagahelia.bookstore.domain.AppUser;
+
 
 @Controller
 public class BookController {
 
     private final BookRepository bookRepository;
-
     private final CategoryRepository crepository;
+    private final AppUserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;    
     
     // Add new student
     // @RequestMapping(value = "/book/add")
@@ -59,9 +63,15 @@ public class BookController {
         return "redirect:/booklist";
     }
 
-    public BookController(BookRepository bookRepository, CategoryRepository crepository) {
+    public BookController(
+                BookRepository bookRepository, 
+                CategoryRepository crepository,
+                AppUserRepository userRepository,
+                PasswordEncoder passwordEncoder) {
         this.bookRepository = bookRepository;
         this.crepository = crepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
   
 
@@ -118,4 +128,33 @@ public class BookController {
         //crepository.saveAll(book);
         return "redirect:/booklist";
     }
+
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
+    }
+
+    @PostMapping("/signup")
+    public String signup(
+        @RequestParam String username, 
+        @RequestParam String password,
+        @RequestParam String email) {
+        
+            String cleanUsername = username.trim();
+
+            if (cleanUsername.isEmpty() || password.isBlank() || email.isBlank() || userRepository.findByUsername(cleanUsername).isPresent()) {
+                return "redirect:/signup?error";
+            }
+            
+            AppUser user = new AppUser(
+                cleanUsername,
+                passwordEncoder.encode(password),
+                "USER",
+                email.trim()
+            );
+
+        userRepository.save(user);
+        return "redirect:/login?registered";
+    }
+    
 }

@@ -7,21 +7,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import fi.haagahelia.bookstore.domain.AppUser;
 import fi.haagahelia.bookstore.domain.AppUserRepository;
 import fi.haagahelia.bookstore.domain.Book;
 import fi.haagahelia.bookstore.domain.BookRepository;
 import fi.haagahelia.bookstore.domain.Category;
 import fi.haagahelia.bookstore.domain.CategoryRepository;
-import fi.haagahelia.bookstore.domain.AppUser;
 
 @SpringBootApplication
 public class BookstoreApplication {
-
-//     private final AppUserRepository appUserRepository;
-
-//     BookstoreApplication(AppUserRepository appUserRepository) {
-//         this.appUserRepository = appUserRepository;
-//     }
 
     public static void main(String[] args) {
         SpringApplication.run(BookstoreApplication.class, args);

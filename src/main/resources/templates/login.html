@@ -13,10 +13,14 @@
         <div class="alert alert-warning" th:if="${param.logout}">
             You have been logged out.
         </div>
-        <form th:action="@{/login}" method="post">
+        <div class="alert alert-success" th:if="${param.registered}">
+            Account created. Please sign in.
+        </div>
+        <form th:action="@{/login}" method="post" class="d-flex flex-column gap-3">
             <div><label> User Name : <input type="text" name="username" class="form-control"/> </label></div>
             <div><label> Password: <input type="password" name="password" class="form-control"/> </label></div>
             <div><input type="submit" value="Sign In" class="btn btn-primary"/></div>
+            <div><a class="btn btn-link" th:href="@{/signup}">Sign up</a></div>
         </form>
 
        </div>

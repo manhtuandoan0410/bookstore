@@ -6,11 +6,19 @@ server.port=7015
 4. start the ssh tunnel for mysql port 3306
 ssh -L 3306:127.0.0.1:3306  tuand@softala.haaga-helia.fi
 
-5. try to run the software with first going to
+(optional) 5. try to run the software with first going to
 cd target
 ls
-java -jar yoursoftware.jar name
+java -jar bookstore-0.0.1-SNAPSHOT.jar
 
+6. transfer your software to softala.haaga-helia.fi in target directory
+scp bookstore-0.0.1-SNAPSHOT.jar tuand@softala.haaga-helia.fi:
+7. connect to softala.haaga-helia.fi computer from next git bash window
+ssh tuand@softala.haaga-helia.fi
+8. see if your file is there
+ls
+9. start your software with
+java -jar bookstore-0.0.1-SNAPSHOT.jar 
 
 
 

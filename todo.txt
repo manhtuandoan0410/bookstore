@@ -1,2 +1,8 @@
 1. change pom.xml java to 17
+2. edit in application.propeties the port line
+server.port=${PORT:7015} TO 
+server.port=7015
+3. test running ./mvnw -DskipTests package
+
+
 

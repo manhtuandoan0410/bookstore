@@ -1,5 +1,5 @@
 # Build-vaihe
-FROM eclipse-temurin:25-jdk AS builder
+FROM eclipse-temurin:17-jdk AS builder
 
 WORKDIR /opt/app
 
@@ -21,13 +21,13 @@ RUN ./mvnw clean install -DskipTests
 RUN cp target/*.jar /opt/app/app.jar
 
 # Runtime-vaihe
-FROM eclipse-temurin:25-jre
+FROM eclipse-temurin:17-jre
 
 WORKDIR /opt/app
 
 # Kopioi buildattu JAR-tiedosto
 COPY --from=builder /opt/app/app.jar /opt/app/app.jar
 
-EXPOSE 7015
+EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "/opt/app/app.jar"]

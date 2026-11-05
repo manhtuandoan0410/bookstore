@@ -3,6 +3,9 @@
 server.port=${PORT:7015} TO 
 server.port=7015
 3. test running ./mvnw -DskipTests package
+4. start the ssh tunnel for mysql port 3306
+ssh -L 3306:127.0.0.1:3306 
+
 4. try to run the software with first going to
 cd target
 ls
